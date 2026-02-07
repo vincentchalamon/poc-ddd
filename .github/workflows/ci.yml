@@ -205,8 +205,6 @@ jobs:
     container:
       image: docker.io/esoledad/php:8.5
       options: --user root
-      env:
-        APP_ENV: dev # required for parameters.symfony.containerXmlPath
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -224,6 +222,8 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-scripts --no-progress
       - name: WarmUp Cache
+        env:
+          APP_ENV: dev # required for parameters.symfony.containerXmlPath
         run: bin/console cache:warmup --no-optional-warmers
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse -c phpstan.dist.neon
