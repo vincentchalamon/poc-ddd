@@ -18,20 +18,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 PostgreSQLPlatform::class => 'identity',
             ],
             'auto_mapping' => true,
-            'mappings' => [
-                'App' => [
-                    'type' => 'attribute',
-                    'is_bundle' => false,
-                    'dir' => '%kernel.project_dir%/src/Entity',
-                    'prefix' => 'App\Entity',
-                    'alias' => 'App',
-                ],
-            ],
+            'mappings' => [],
             'controller_resolver' => [
                 'auto_mapping' => false,
             ],
         ],
     ]);
+
     if ('test' === $containerConfigurator->env()) {
         $containerConfigurator->extension('doctrine', [
             'dbal' => [

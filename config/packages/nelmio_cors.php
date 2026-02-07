@@ -19,6 +19,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'PATCH',
                 'DELETE',
             ],
+            'allow_credentials' => true,
             'allow_headers' => [
                 'Content-Type',
                 'Authorization',
