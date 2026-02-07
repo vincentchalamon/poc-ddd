@@ -8,7 +8,7 @@ services:
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
       TRUSTED_PROXIES: ${TRUSTED_PROXIES:-127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
       TRUSTED_HOSTS: ${TRUSTED_HOSTS:-^${SERVER_NAME:-example\.com|localhost}|php$$}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-16}&charset=${POSTGRES_CHARSET:-utf8}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-18}&charset=${POSTGRES_CHARSET:-utf8}
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -33,14 +33,14 @@ services:
 
 ###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    image: postgres:${POSTGRES_VERSION:-18}-alpine
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-app}
       # You should definitely change the password in production
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-!ChangeMe!}
       - POSTGRES_USER=${POSTGRES_USER:-app}
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      test: ["CMD", "pg_isready", "--dbname", "${POSTGRES_DB:-app}", "--username", "${POSTGRES_USER:-app}"]
       timeout: 5s
       retries: 5
       start_period: 60s

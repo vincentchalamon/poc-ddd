@@ -8,6 +8,7 @@
 /public/bundles/
 /var/
 /vendor/
+/vendor-bin/**/vendor/
 ###< symfony/framework-bundle ###
 
 ###> friendsofphp/php-cs-fixer ###

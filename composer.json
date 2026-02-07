@@ -2,7 +2,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/doctrine-orm": "^4.2",
@@ -29,6 +29,7 @@
         "symfony/yaml": "8.0.*"
     },
     "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.9",
         "ekino/phpstan-banned-code": "^3.0",
         "justinrainbow/json-schema": "^6.6",
         "nikic/php-parser": "^5.7",
@@ -39,6 +40,7 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^13.0",
+        "rector/rector": "^2.3",
         "roave/security-advisories": "dev-latest",
         "shipmonk/dead-code-detector": "^0.14.1",
         "symfony/browser-kit": "8.0.*",
@@ -58,6 +60,7 @@
         },
         "sort-packages": true,
         "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
             "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
@@ -70,7 +73,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\Architecture\\": "tests/phpstan/Architecture/",
             "App\\Tests\\": "tests/",
             "App\\Utils\\PHPStan\\": "utils/phpstan/src/",
             "App\\Utils\\PHPStan\\Tests\\": "utils/phpstan/tests/",
@@ -112,6 +114,10 @@
             "allow-contrib": false,
             "require": "8.0.*",
             "docker": false
+        },
+        "bamarni-bin": {
+            "bin-links": true,
+            "forward-command": true
         }
     }
 }
