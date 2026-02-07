@@ -33,6 +33,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
         ]);
     }
+
     if ('test' === $containerConfigurator->env()) {
         $containerConfigurator->extension('monolog', [
             'handlers' => [
@@ -56,6 +57,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
         ]);
     }
+
     if ('prod' === $containerConfigurator->env()) {
         $containerConfigurator->extension('monolog', [
             'handlers' => [
