@@ -14,7 +14,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'x-forwarded-proto',
         ],
     ]);
-    if ($containerConfigurator->env() === 'test') {
+    if ('test' === $containerConfigurator->env()) {
         $containerConfigurator->extension('framework', [
             'test' => true,
         ]);

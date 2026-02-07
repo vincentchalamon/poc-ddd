@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ],
         'access_control' => null,
     ]);
-    if ($containerConfigurator->env() === 'test') {
+    if ('test' === $containerConfigurator->env()) {
         $containerConfigurator->extension('security', [
             'password_hashers' => [
                 PasswordAuthenticatedUserInterface::class => [
