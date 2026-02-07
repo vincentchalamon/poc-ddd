@@ -29,14 +29,27 @@
         "symfony/yaml": "8.0.*"
     },
     "require-dev": {
+        "ekino/phpstan-banned-code": "^3.0",
+        "justinrainbow/json-schema": "^6.6",
+        "nikic/php-parser": "^5.7",
+        "phpat/phpat": "^0.12.2",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^13.0",
+        "roave/security-advisories": "dev-latest",
+        "shipmonk/dead-code-detector": "^0.14.1",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",
         "symfony/debug-bundle": "8.0.*",
         "symfony/maker-bundle": "^1.44",
-        "symfony/phpunit-bridge": "8.0.*",
         "symfony/stopwatch": "8.0.*",
         "symfony/var-dumper": "8.0.*",
-        "symfony/web-profiler-bundle": "8.0.*"
+        "symfony/web-profiler-bundle": "8.0.*",
+        "symplify/config-transformer": "*",
+        "zenstruck/foundry": "^2.9"
     },
     "config": {
         "optimize-autoloader": true,
@@ -45,6 +58,7 @@
         },
         "sort-packages": true,
         "allow-plugins": {
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         }
@@ -56,7 +70,12 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "App\\Tests\\Architecture\\": "tests/phpstan/Architecture/",
+            "App\\Tests\\": "tests/",
+            "App\\Utils\\PHPStan\\": "utils/phpstan/src/",
+            "App\\Utils\\PHPStan\\Tests\\": "utils/phpstan/tests/",
+            "App\\Utils\\Rector\\": "utils/rector/src",
+            "App\\Utils\\Rector\\Tests\\": "utils/rector/tests"
         }
     },
     "classmap": ["config/"],
