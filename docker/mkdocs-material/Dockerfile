@@ -5,6 +5,4 @@ FROM squidfunk/mkdocs-material:9
 # hadolint ignore=DL3013,DL3018
 RUN apk add --no-cache curl; \
 	rm -rf /var/cache/apk/*; \
-    pip install --no-cache-dir \
-        mkdocs-open-in-new-tab \
-    ;
+    pip install --no-cache-dir --root-user-action=ignore mkdocs-open-in-new-tab;

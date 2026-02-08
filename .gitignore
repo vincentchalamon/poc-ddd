@@ -1,4 +1,5 @@
 /docker/db/data
+/docker/mkdocs-material/hooks/__pycache__
 /docs/phpmetrics
 /.mkdocs
 

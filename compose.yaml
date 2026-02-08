@@ -4,6 +4,7 @@ services:
     working_dir: /app
     entrypoint: /app/docker/php/docker-entrypoint.sh
     command: symfony server:start --allow-all-ip --port 443
+    user: root
     depends_on:
       database:
         condition: service_started
@@ -21,7 +22,6 @@ services:
     volumes:
       - ./:/app
       - /app/var
-      - ./docker/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
       # If you develop on Mac or Windows you can remove the vendor/ directory
       #  from the bind-mount for better performance by enabling the next line:
       #- /app/vendor
@@ -39,10 +39,11 @@ services:
         published: ${HTTP3_PORT:-443}
         protocol: udp
     healthcheck:
-      test: curl --insecure --fail https://localhost/docs || exit 1
-      timeout: 5s
-      retries: 5
-      start_period: 60s
+      test: [ "CMD-SHELL", "symfony server:status | grep -q 'Listening'" ]
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
 ###> doctrine/doctrine-bundle ###
   database:

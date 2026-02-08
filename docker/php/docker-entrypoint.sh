@@ -1,10 +1,6 @@
 #!/bin/sh
 set -e
 
-if [ "$1" = 'symfony' ]; then
-    rm -rf `find ~/.symfony5/ -mindepth 1 -maxdepth 1 -not -name "certs"`
-fi
-
 if [ "$1" = 'symfony' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	if [ -z "$(ls -A 'vendor/' 2>/dev/null)" ]; then
 		composer install --prefer-dist --no-progress --no-interaction
