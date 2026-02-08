@@ -4,7 +4,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          colors="true"
-         bootstrap="tests/bootstrap.php"
+         bootstrap="config/bootstrap.php"
          failOnDeprecation="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
@@ -27,8 +27,17 @@
     </source>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Unit">
             <directory>tests</directory>
+            <exclude>tests/Architecture</exclude>
+            <exclude>tests/Api</exclude>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory>tests/Api</directory>
+        </testsuite>
+        <testsuite name="Utils">
+            <directory>utils/phpstan/tests</directory>
+            <directory>utils/rector/tests</directory>
         </testsuite>
     </testsuites>
 

@@ -23,6 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'main' => [
                 'lazy' => true,
                 'provider' => 'users_in_memory',
+                'stateless' => true,
             ],
         ],
         'access_control' => null,

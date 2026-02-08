@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Kernel;
+use App\Shared\Infrastructure\Symfony\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Dotenv\Dotenv;
 
-require __DIR__.'/../../vendor/autoload.php';
-
-new Dotenv()->bootEnv(__DIR__.'/../../.env');
+require __DIR__.'/../../config/bootstrap.php';
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 
