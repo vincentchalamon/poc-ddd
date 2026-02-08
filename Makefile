@@ -135,7 +135,7 @@ dockerfile.lint:
 	done
 .PHONY: dockerfile.lint
 
-##doc: run documentation locally (PHPDoc with UML, PHPMetrics, and MkDocs)
+##doc: run documentation locally (PHPDoc, PHPMetrics, and MkDocs)
 doc:
-	@$(DOCKER_COMPOSE) --profile docs up --wait
+	@docker compose --profile docs up --wait
 .PHONY: doc
