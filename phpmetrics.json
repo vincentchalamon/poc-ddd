@@ -1,0 +1,11 @@
+{
+    "includes": [
+        "src"
+    ],
+    "groups": [
+        {
+            "name": "Shared",
+            "match": "!^App\\\\Shared\\\\!i"
+        }
+    ]
+}

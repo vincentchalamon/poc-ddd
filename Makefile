@@ -9,7 +9,7 @@ help:
         | awk 'BEGIN {FS = ": "}; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}' \
 
 ##lint: Run all linters
-lint: markdown.lint rector.lint cs.lint
+lint: markdown.lint rector.lint cs.lint dockerfile.lint
 .PHONY: lint
 
 ##lint.fix: Fix all linters
@@ -17,7 +17,7 @@ lint.fix: markdown.fix rector.fix cs.fix
 .PHONY: lint.fix
 
 ##tests: Run all tests
-tests: lint.fix openapi.lint phpunit security.check phpstan
+tests: lint openapi.lint phpunit security.check phpstan
 .PHONY: tests
 
 ##security.check: check for known vulnerabilities in project dependencies
@@ -126,6 +126,14 @@ markdown.lint.path:
 openapi.lint:
 	@bin/console api:openapi:export --yaml 1> openapi.yaml && $(DOCKER_RUN) --pull=always --rm -t -v $$(pwd):/spec redocly/cli lint openapi.yaml
 .PHONY: openapi.lint
+
+##dockerfile.lint: run hadolint commands
+dockerfile.lint:
+	@find . -name "Dockerfile" -type f | while read -r file; do \
+		echo "Linting $$file..."; \
+		docker run --rm -i hadolint/hadolint < "$$file" || exit 1; \
+	done
+.PHONY: dockerfile.lint
 
 ##doc: run documentation locally (PHPDoc with UML, PHPMetrics, and MkDocs)
 doc:
