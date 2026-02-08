@@ -28,3 +28,43 @@ services:
         published: 5432
         protocol: tcp
 ###< doctrine/doctrine-bundle ###
+
+  mkdocs:
+    build:
+      dockerfile: docker/mkdocs-material/Dockerfile
+      context: ./
+    profiles: [ "docs" ]
+    depends_on:
+      phpdoc:
+        condition: service_completed_successfully
+      phpmetrics:
+        condition: service_completed_successfully
+    volumes:
+      - ./:/docs
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://localhost:8000 || exit 1" ]
+      start_period: 15s
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    tty: true
+    stdin_open: true
+    ports:
+      - "8000:8000"
+
+  phpdoc:
+    image: phpdoc/phpdoc
+    pull_policy: always
+    profiles: [ "docs" ]
+    entrypoint: /data/docker/phpdoc/entrypoint.sh
+    volumes:
+      - ./:/data
+
+  phpmetrics:
+    image: esoledad/php:8.5
+    pull_policy: always
+    profiles: [ "docs" ]
+    working_dir: /shared/httpd/ae-api
+    command: vendor/bin/phpmetrics --config=phpmetrics.json --report-html=docs/phpmetrics
+    volumes:
+      - ./:/shared/httpd/ae-api

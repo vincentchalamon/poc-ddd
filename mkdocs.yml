@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/squidfunk/mkdocs-material/refs/heads/master/docs/schema.json
+site_name: S*ck It! API Documentation
+site_url: https://vincentchalamon.github.io/poc-ddd/
+site_description: A DDD API Platform project to POC stuffs.
+site_dir: .mkdocs
+strict: true
+copyright: Copyright &copy; 2026 - 20nn Vincent CHALAMON
+repo_name: poc-ddd
+repo_url: https://github.com/vincentchalamon/poc-ddd/
+edit_uri: https://github.com/vincentchalamon/poc-ddd/blob/main/
+
+hooks:
+    - docker/mkdocs-material/hooks/links.py
+
+extra_css: 
+    - assets/stylesheets/extra.css
+theme:
+    name: material
+    custom_dir: docker/mkdocs-material/overrides
+    logo: https://fr.ardennes-etape.be/shared/images/logo.svg
+    icon:
+        repo: fontawesome/brands/gitlab
+    font:
+        text: Lato
+        code: Roboto Mono
+    palette:
+        - scheme: app
+          primary: app
+          accent: app
+          toggle:
+              icon: material/toggle-switch-off-outline
+              name: Switch to dark mode
+        - scheme: slate
+          primary: app
+          accent: app
+          toggle:
+              icon: material/toggle-switch
+              name: Switch to light mode
+    features:
+        - search.suggest
+        - search.highlight
+        - content.code.copy
+        - content.footnote.tooltips
+        - navigation.path
+        - navigation.top
+
+plugins:
+    # https://squidfunk.github.io/mkdocs-material/plugins/search/
+    - search:
+          lang: en
+    - minify:
+          minify_html: true
+    # https://squidfunk.github.io/mkdocs-material/plugins/offline/
+    - offline
+    # https://github.com/JakubAndrysek/mkdocs-open-in-new-tab
+    - open-in-new-tab:
+          add_icon: true
+
+markdown_extensions:
+    # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#admonition
+    - admonition
+    # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#attribute-lists
+    - attr_list
+    # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#details
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:material.extensions.emoji.twemoji
+          emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.highlight:
+          # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#+pymdownx.highlight.linenums
+          linenums: true
+          # https://github.com/squidfunk/mkdocs-material/issues/138#issuecomment-2294025627
+          extend_pygments_lang:
+              - name: php
+                lang: php
+                options:
+                    startinline: true
+    - pymdownx.superfences:
+          # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#+pymdownx.superfences.custom_fences
+          custom_fences:
+              - name: mermaid
+                class: mermaid
+                format: !!python/name:pymdownx.superfences.fence_code_format
+    # https://squidfunk.github.io/mkdocs-material/reference/data-tables/
+    - tables
+
+# Can't override nav to add links to PHPDoc and PHPMetrics reports
+# Otherwise the sub-elements of "adr" and "guides" will be lost
+# Nav have been overridden using theme extension (see docker/mkdocs-material/overrides).
+# https://squidfunk.github.io/mkdocs-material/customization/#extending-the-theme
+# https://www.mkdocs.org/user-guide/configuration/#nav
+#nav:
+#    - README: 'README.md'
+#    - ADR: '/adr/'
+#    - Guides: '/guides/'
+#    - PHPDoc: '/phpdoc/'
+#    - PHPMetrics: '/phpmetrics/'
+extra:
+    additional_nav:
+        PHPDoc: /phpdoc/index.html
+        PHPMetrics: /phpmetrics/index.html
