@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Utils\Rector\Rector\RenameHandlerMethodNameToInvokeRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\SetList;
 
@@ -28,6 +29,9 @@ $rector = RectorConfig::configure()
     ])
     ->withAttributesSets()
     ->withComposerBased(doctrine: true, phpunit: true, symfony: true)
+    ->withRules([
+        RenameHandlerMethodNameToInvokeRector::class,
+    ])
 ;
 
 if (is_file(__DIR__.'/var/cache/dev/App_KernelDevDebugContainer.php')) {

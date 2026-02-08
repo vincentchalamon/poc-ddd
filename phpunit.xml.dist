@@ -27,8 +27,17 @@
     </source>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Unit">
             <directory>tests</directory>
+            <exclude>tests/Architecture</exclude>
+            <exclude>tests/Api</exclude>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory>tests/Api</directory>
+        </testsuite>
+        <testsuite name="Utils">
+            <directory>utils/phpstan/tests</directory>
+            <directory>utils/rector/tests</directory>
         </testsuite>
     </testsuites>
 

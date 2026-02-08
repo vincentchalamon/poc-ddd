@@ -1,4 +1,4 @@
-# S*ck It!
+# S*ck It
 
 A fake dating app to serve as examples and POCs for DDD concepts.
 

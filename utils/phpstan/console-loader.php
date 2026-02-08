@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Kernel;
+use App\Shared\Infrastructure\Symfony\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 require __DIR__.'/../../config/bootstrap.php';

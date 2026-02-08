@@ -10,11 +10,10 @@ parameters:
         - config/
         - public/
         - src/
-        - tests/
     excludePaths:
         - config/reference.php
     symfony:
-        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+        containerXmlPath: var/cache/dev/App_Shared_Infrastructure_Symfony_KernelDevDebugContainer.xml
         consoleApplicationLoader: utils/phpstan/console-loader.php
     doctrine:
         objectManagerLoader: utils/phpstan/doctrine-object-manager.php
@@ -51,3 +50,16 @@ parameters:
             # enable detection of shell execution by backticks
             - type: Expr_ShellExec
               functions: null
+    ignoreErrors:
+        - identifier: generics.interfaceConflict
+          paths:
+              # Doctrine ReadableCollection extends IteratorAggregate with different TKey constraint
+              - src/Shared/Infrastructure/ApiPlatform/Doctrine/Common/Collections/PaginatedCollection.php
+
+rules:
+    - App\Utils\PHPStan\Rules\RepositoryInjectionRule
+
+services:
+    - class: App\Tests\Architecture\SharedArchitectureTest
+      tags:
+          - phpat.test

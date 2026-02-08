@@ -11,7 +11,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ],
     ]);
 
-    if ($containerConfigurator->env() === 'prod') {
+    if ('prod' === $containerConfigurator->env()) {
         $containerConfigurator->extension('framework', [
             'router' => [
                 'strict_requirements' => null,
