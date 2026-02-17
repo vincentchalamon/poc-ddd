@@ -32,7 +32,6 @@ final class UnprocessablePropertyDenormalizer implements DenormalizerInterface, 
     #[\Override]
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return false;
         // Prevent infinite loop when the normalizer is called recursively for the same type
         if (isset($context[self::class]) && isset($context[$type])) {
             return false;

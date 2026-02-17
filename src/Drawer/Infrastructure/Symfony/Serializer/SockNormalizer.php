@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Drawer\Infrastructure\Symfony\Serializer;
 
+use App\Drawer\Domain\Factory\NameFactory;
 use App\Drawer\Domain\Model\Sock;
+use App\Shared\Infrastructure\Identifier\UuidIdentifier;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -37,6 +40,7 @@ final class SockNormalizer implements DenormalizerInterface, DenormalizerAwareIn
     public function __construct(
         #[Autowire(service: 'app.drawer.sock_property_info')]
         private readonly PropertyInfoExtractorInterface $propertyInfoExtractor,
+        private readonly NameFactory $nameFactory,
     ) {
     }
 
@@ -58,24 +62,46 @@ final class SockNormalizer implements DenormalizerInterface, DenormalizerAwareIn
     #[\Override]
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Sock
     {
-        $objectToPopulate = $context['object_to_populate'] ?? null;
-        if (!$objectToPopulate instanceof Sock) {
-            throw NotNormalizableValueException::createForUnexpectedDataType(message: 'Cannot denormalize Sock without an object to populate.', data: $objectToPopulate, expectedTypes: [Sock::class], path: $context['deserialization_path'] ?? null);
-        }
-
-        foreach ($data as $property => $value) {
-            $propertyType = $this->propertyInfoExtractor->getType($type, $property, $context);
-            if (!$propertyType instanceof ObjectType) {
-                continue;
-            }
-            $data[$property] = $this->denormalizer->denormalize($value, $propertyType->getClassName(), $format, $context);
-        }
-
+        $errors = [];
         $properties = $this->propertyInfoExtractor->getProperties($type, $context);
         foreach ($properties as $property) {
-            if (!\array_key_exists($property, $data)) {
-                $data[$property] = $objectToPopulate->{$property}();
+            $value = $data[$property] ?? null;
+
+            /** @var ObjectType|null $propertyType */
+            $propertyType = $this->propertyInfoExtractor->getType($type, $property, $context);
+            if (isset($data[$property])) {
+                try {
+                    // Denormalize ValueObject
+                    $data[$property] = $this->denormalizer->denormalize($value, $propertyType?->getClassName() ?? 'string', $format, $context + ['deserialization_path' => $property]);
+                } catch (NotNormalizableValueException $exception) {
+                    if (!isset($context['not_normalizable_value_exceptions'])) {
+                        throw $exception;
+                    }
+
+                    $errors[] = $exception;
+                }
+                continue;
             }
+
+            // System data
+            if ('identifier' === $property) {
+                $data['identifier'] = new UuidIdentifier();
+                continue;
+            }
+            if ('name' === $property) {
+                $data['name'] = $this->nameFactory->create();
+                continue;
+            }
+
+            if (!$propertyType->isNullable()) {
+                // Check for missing property
+                $errors[] = NotNormalizableValueException::createForUnexpectedDataType(message: 'This value should not be null.', data: null, expectedTypes: [$propertyType->getClassName() ?? 'string'], path: $property, useMessageForUser: true);
+            }
+        }
+
+        if ($errors) {
+            // This is converted to ConstraintViolationList and ValidationException by DeserializeProvider
+            throw new PartialDenormalizationException($data, $errors);
         }
 
         return new Sock(...$data);

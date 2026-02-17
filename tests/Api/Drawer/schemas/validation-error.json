@@ -4,11 +4,11 @@
   "properties": {
     "@context": {
       "type": "string",
-      "enum": ["/contexts/ConstraintViolationList"]
+      "enum": ["/contexts/ConstraintViolation"]
     },
     "@type": {
       "type": "string",
-      "enum": ["ConstraintViolationList"]
+      "enum": ["ConstraintViolation"]
     },
     "hydra:title": {
       "type": "string",

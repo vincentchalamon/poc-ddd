@@ -114,7 +114,7 @@ final class SockTest extends ApiTestCase
             'payload' => ['emailAddress' => 'not-an-email'],
             'expectedViolation' => [
                 'propertyPath' => 'emailAddress',
-                'message' => 'Email address "not-an-email" is invalid.',
+                'hint' => 'Email address "not-an-email" is invalid.',
             ],
         ];
 
@@ -122,7 +122,7 @@ final class SockTest extends ApiTestCase
             'payload' => [],
             'expectedViolation' => [
                 'propertyPath' => 'emailAddress',
-                'message' => 'This value should not be null.',
+                'hint' => 'This value should not be null.',
             ],
         ];
     }
@@ -216,7 +216,7 @@ final class SockTest extends ApiTestCase
         $client->request('GET', '/socks/'.$sock->identifier());
 
         self::assertResponseIsSuccessful();
-        self::assertResponseHeaderSame('content-type', 'application/json; charset=utf-8');
+        self::assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         self::assertJsonContains([
             'identifier' => (string) $sock->identifier(),
             'emailAddress' => (string) $sock->emailAddress(),

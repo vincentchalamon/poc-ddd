@@ -12,7 +12,7 @@ use function Symfony\Component\String\u;
 /**
  * @extends NonEmptyString
  */
-readonly class EmailAddress extends NonEmptyString
+final readonly class EmailAddress extends NonEmptyString
 {
     private string $domain;
     private string $topLevelDomain;

@@ -27,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  *
  * @see https://www.postgresql.org/docs/current/datatype-numeric.html
  */
-final class FloatValueType extends Type
+class FloatValueType extends Type
 {
     public const string TYPE = 'float_value';
 
@@ -61,7 +61,7 @@ final class FloatValueType extends Type
             throw InvalidType::new($value, self::TYPE, ['null', FloatValue::class]);
         }
 
-        return parent::convertToDatabaseValue(value: (string) $value, platform: $platform);
+        return parent::convertToDatabaseValue((string) $value, $platform);
     }
 
     #[\Override]
@@ -71,6 +71,6 @@ final class FloatValueType extends Type
             return null;
         }
 
-        return parent::convertToPHPValue(new FloatValue(value: $value), $platform);
+        return new FloatValue($value);
     }
 }

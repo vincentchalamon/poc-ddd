@@ -32,7 +32,7 @@ trait NonEmptyStringTypeTrait
         }
 
         try {
-            return new NonEmptyString(text: $value);
+            return new NonEmptyString($value);
         } catch (NonEmptyStringException $nonEmptyStringException) {
             throw new ConversionException(\sprintf('Failed to convert database value to NonEmptyString: %s.', $nonEmptyStringException->getMessage()), $nonEmptyStringException->getCode(), $nonEmptyStringException);
         }

@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Drawer\Infrastructure\ApiPlatform\State\CreateSockProcessor;
-use App\Drawer\Infrastructure\ApiPlatform\State\CreateSockProvider;
 use App\Drawer\Infrastructure\ApiPlatform\State\GetSockProvider;
 use App\Drawer\Infrastructure\ApiPlatform\State\UpdateSockProcessor;
 use App\Shared\Domain\Identifier\Identifier;
@@ -25,8 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/socks',
             denormalizationContext: ['groups' => ['sock:create']],
             validationContext: ['groups' => ['sock:create']],
-            read: true,
-            provider: CreateSockProvider::class,
+            //            read: true,
+            //            provider: CreateSockProvider::class,
             processor: CreateSockProcessor::class,
         ),
         new Get(
@@ -48,6 +47,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 class Sock implements \Stringable
 {
+    #[Assert\NotNull(groups: ['sock:update'])]
+    #[Groups(['sock:read', 'sock:update'])]
+    #[ORM\Embedded(class: Style::class)]
+    private ?Style $style = null;
+
     public function __construct(
         #[Groups(['sock:read'])]
         #[ORM\Id]
@@ -63,11 +67,9 @@ class Sock implements \Stringable
         #[ORM\Column(type: NonEmptyString::class)]
         private readonly NonEmptyString $name,
 
-        #[Assert\NotNull(groups: ['sock:update'])]
-        #[Groups(['sock:read', 'sock:update'])]
-        #[ORM\Embedded(class: Style::class)]
-        private ?Style $style = null,
+        ?Style $style = null,
     ) {
+        $this->style = $style;
     }
 
     #[\Override]

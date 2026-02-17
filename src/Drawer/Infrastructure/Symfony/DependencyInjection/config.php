@@ -3,7 +3,11 @@
 declare(strict_types=1);
 
 use App\Drawer\Domain\Model\EmailAddress;
+use App\Drawer\Domain\Model\Location;
+use App\Drawer\Domain\Model\Size;
 use App\Drawer\Infrastructure\Doctrine\DBAL\Types\EmailAddressType;
+use App\Drawer\Infrastructure\Doctrine\DBAL\Types\LocationType;
+use App\Drawer\Infrastructure\Doctrine\DBAL\Types\SizeType;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -18,6 +22,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'types' => [
                 EmailAddressType::class => EmailAddressType::class,
                 EmailAddress::class => EmailAddressType::class,
+                SizeType::class => SizeType::class,
+                Size::class => SizeType::class,
+                LocationType::class => LocationType::class,
+                Location::class => LocationType::class,
             ],
         ],
         'orm' => [

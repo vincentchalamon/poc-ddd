@@ -10,6 +10,6 @@ final class StyleException extends \DomainException implements UnprocessableThro
 {
     public static function fromMissingKeywords(): self
     {
-        return new self('At least one keyword is required');
+        return new self('At least one keyword is required.');
     }
 }

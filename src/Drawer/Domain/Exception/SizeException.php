@@ -10,6 +10,6 @@ final class SizeException extends \DomainException implements UnprocessableThrow
 {
     public static function create(string $size): self
     {
-        return new self(sprintf('Size "%scm" is out of range', $size));
+        return new self(sprintf('Size "%scm" is out of range.', $size));
     }
 }

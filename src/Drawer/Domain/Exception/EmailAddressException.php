@@ -10,6 +10,6 @@ final class EmailAddressException extends \DomainException implements Unprocessa
 {
     public static function create(string $emailAddress): self
     {
-        return new self(sprintf('Email address "%s" is invalid', $emailAddress));
+        return new self(sprintf('Email address "%s" is invalid.', $emailAddress));
     }
 }

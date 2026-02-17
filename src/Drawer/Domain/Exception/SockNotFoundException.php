@@ -11,6 +11,6 @@ final class SockNotFoundException extends \DomainException implements DomainNotF
 {
     public static function create(Identifier $identifier): self
     {
-        return new self(sprintf('Sock with id "%s" is not found', $identifier));
+        return new self(sprintf('Sock with id "%s" is not found.', $identifier));
     }
 }
