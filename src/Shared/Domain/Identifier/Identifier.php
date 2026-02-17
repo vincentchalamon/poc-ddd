@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Identifier;
 
-use App\Shared\Domain\Comparable\Comparable;
+use Doctrine\Common\Comparable;
 
 /**
  * When used on a resource, it passes through {@see IdentifierPropertyMetadataFactory} that will add some metadata.

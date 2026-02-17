@@ -2,6 +2,7 @@
 /docker/mkdocs-material/hooks/__pycache__
 /docs/phpmetrics
 /.mkdocs
+openapi.*
 
 ###> symfony/framework-bundle ###
 /.env.local

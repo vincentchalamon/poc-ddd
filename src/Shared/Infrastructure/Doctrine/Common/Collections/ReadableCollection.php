@@ -32,15 +32,15 @@ final class ReadableCollection implements ReadableCollectionInterface
     /**
      * @var array<TKey, T>
      */
-    private array $elements;
+    private array $collection;
 
     /**
-     * @param array<TKey, T>|ReadableCollectionInterface<TKey, T> $elements
+     * @param array<TKey, T>|ReadableCollectionInterface<TKey, T> $collection
      */
     public function __construct(
-        array|ReadableCollectionInterface $elements,
+        array|ReadableCollectionInterface $collection,
     ) {
-        $this->elements = $elements instanceof ReadableCollectionInterface ? $elements->toArray() : $elements;
+        $this->collection = $collection instanceof ReadableCollectionInterface ? $collection->toArray() : $collection;
     }
 
     /**
@@ -50,16 +50,16 @@ final class ReadableCollection implements ReadableCollectionInterface
      */
     public function sort(\Closure $p): self
     {
-        $elements = $this->elements;
-        usort($elements, $p);
+        $collection = $this->collection;
+        usort($collection, $p);
 
-        return new self($elements);
+        return new self($collection);
     }
 
     #[\Override]
     public function count(): int
     {
-        return \count($this->elements);
+        return \count($this->collection);
     }
 
     /**
@@ -68,7 +68,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function getIterator(): \ArrayIterator
     {
-        return new \ArrayIterator($this->elements);
+        return new \ArrayIterator($this->collection);
     }
 
     /**
@@ -82,79 +82,79 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function isEmpty(): bool
     {
-        return [] === $this->elements;
+        return [] === $this->collection;
     }
 
     #[\Override]
     public function contains(mixed $element): bool
     {
-        return \in_array($element, $this->elements, true);
+        return \in_array($element, $this->collection, true);
     }
 
     #[\Override]
     public function containsKey(int|string $key): bool
     {
-        return isset($this->elements[$key]) || \array_key_exists($key, $this->elements);
+        return isset($this->collection[$key]) || \array_key_exists($key, $this->collection);
     }
 
     #[\Override]
     public function get(int|string $key)
     {
-        return $this->elements[$key] ?? null;
+        return $this->collection[$key] ?? null;
     }
 
     #[\Override]
     public function getKeys(): array
     {
-        return array_keys($this->elements);
+        return array_keys($this->collection);
     }
 
     #[\Override]
     public function getValues(): array
     {
-        return array_values($this->elements);
+        return array_values($this->collection);
     }
 
     #[\Override]
     public function toArray()
     {
-        return $this->elements;
+        return $this->collection;
     }
 
     #[\Override]
     public function first()
     {
-        return reset($this->elements);
+        return reset($this->collection);
     }
 
     #[\Override]
     public function last()
     {
-        return end($this->elements);
+        return end($this->collection);
     }
 
     #[\Override]
     public function key()
     {
-        return key($this->elements);
+        return key($this->collection);
     }
 
     #[\Override]
     public function current()
     {
-        return current($this->elements);
+        return current($this->collection);
     }
 
     #[\Override]
     public function next()
     {
-        return next($this->elements);
+        return next($this->collection);
     }
 
     #[\Override]
     public function slice(int $offset, ?int $length = null): array
     {
-        return \array_slice($this->elements, $offset, $length, true);
+        return \array_slice($this->collection, $offset, $length, true);
     }
 
     /**
@@ -163,7 +163,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function exists(\Closure $p): bool
     {
-        return array_any($this->elements, fn ($element, $key) => $p($key, $element));
+        return array_any($this->collection, fn ($element, $key) => $p($key, $element));
     }
 
     /**
@@ -174,7 +174,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function filter(\Closure $p): self
     {
-        return new self(array_filter($this->elements, $p, \ARRAY_FILTER_USE_BOTH));
+        return new self(array_filter($this->collection, $p, \ARRAY_FILTER_USE_BOTH));
     }
 
     /**
@@ -187,7 +187,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function map(\Closure $func): self
     {
-        return new self(array_map($func, $this->elements));
+        return new self(array_map($func, $this->collection));
     }
 
     /**
@@ -200,7 +200,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     {
         $matches = [];
         $noMatches = [];
-        foreach ($this->elements as $key => $element) {
+        foreach ($this->collection as $key => $element) {
             if ($p($key, $element)) {
                 $matches[$key] = $element;
             } else {
@@ -217,7 +217,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function forAll(\Closure $p): bool
     {
-        return array_all($this->elements, fn ($element, $key) => $p($key, $element));
+        return array_all($this->collection, fn ($element, $key) => $p($key, $element));
     }
 
     /**
@@ -228,7 +228,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function indexOf(mixed $element)
     {
-        return array_search($element, $this->elements, true);
+        return array_search($element, $this->collection, true);
     }
 
     /**
@@ -239,7 +239,7 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function findFirst(\Closure $p)
     {
-        foreach ($this->elements as $key => $element) {
+        foreach ($this->collection as $key => $element) {
             if ($p($key, $element)) {
                 return $element;
             }
@@ -259,6 +259,6 @@ final class ReadableCollection implements ReadableCollectionInterface
     #[\Override]
     public function reduce(\Closure $func, $initial = null)
     {
-        return array_reduce($this->elements, $func, $initial);
+        return array_reduce($this->collection, $func, $initial);
     }
 }

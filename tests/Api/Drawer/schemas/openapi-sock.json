@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "openapi": {
+      "type": "string",
+      "pattern": "^3\\.[0-9]+\\.[0-9]+$"
+    },
+    "info": {
+      "type": "object",
+      "required": ["title", "version"]
+    },
+    "paths": {
+      "type": "object",
+      "properties": {
+        "/socks": {
+          "type": "object",
+          "properties": {
+            "post": {
+              "type": "object",
+              "properties": {
+                "operationId": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "requestBody": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "object",
+                      "properties": {
+                        "application/json": {
+                          "type": "object",
+                          "properties": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "$ref": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["content"]
+                },
+                "responses": {
+                  "type": "object",
+                  "properties": {
+                    "201": {
+                      "type": "object",
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "object"
+                        }
+                      },
+                      "required": ["description"]
+                    }
+                  },
+                  "required": ["201"]
+                }
+              },
+              "required": ["operationId", "requestBody", "responses"]
+            }
+          },
+          "required": ["post"]
+        },
+        "/socks/{identifier}": {
+          "type": "object",
+          "properties": {
+            "get": {
+              "type": "object",
+              "properties": {
+                "operationId": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "in": {
+                        "type": "string"
+                      },
+                      "required": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "type": "object",
+                  "properties": {
+                    "200": {
+                      "type": "object",
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["description"]
+                    },
+                    "404": {
+                      "type": "object",
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["description"]
+                    }
+                  },
+                  "required": ["200", "404"]
+                }
+              },
+              "required": ["operationId", "responses"]
+            },
+            "patch": {
+              "type": "object",
+              "properties": {
+                "operationId": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "array"
+                },
+                "requestBody": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "object",
+                      "properties": {
+                        "application/merge-patch+json": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "type": "object",
+                  "properties": {
+                    "200": {
+                      "type": "object",
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["description"]
+                    }
+                  },
+                  "required": ["200"]
+                }
+              },
+              "required": ["operationId", "responses"]
+            }
+          },
+          "required": ["get", "patch"]
+        }
+      },
+      "required": ["/socks", "/socks/{identifier}"]
+    },
+    "components": {
+      "type": "object",
+      "properties": {
+        "schemas": {
+          "type": "object",
+          "properties": {
+            "Sock": {
+              "type": "object"
+            },
+            "Sock.jsonld": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "required": ["schemas"]
+    }
+  },
+  "required": ["openapi", "info", "paths", "components"]
+}

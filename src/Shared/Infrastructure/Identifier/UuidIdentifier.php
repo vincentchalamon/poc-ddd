@@ -32,21 +32,31 @@ final readonly class UuidIdentifier implements Identifier
     }
 
     /**
-     * @param Identifier $objectToCompare
+     * @param Identifier $other
      */
     #[\Override]
-    public function compareTo(mixed $objectToCompare): bool
+    public function compareTo($other): int
     {
-        if (!$objectToCompare instanceof self) {
-            throw new \InvalidArgumentException(\sprintf('Argument $a must be an instance of "%s", "%s" given.', self::class, $objectToCompare::class));
+        if (!$other instanceof self) {
+            throw new \InvalidArgumentException(\sprintf('Argument $a must be an instance of "%s", "%s" given.', self::class, $other::class));
         }
 
-        return $this->__toString() === $objectToCompare->__toString();
+        $compare = strcmp((string) $this, (string) $other);
+
+        if ($compare < 0) {
+            return -1;
+        }
+
+        if ($compare > 0) {
+            return 1;
+        }
+
+        return 0;
     }
 
     #[\Override]
     public function __toString(): string
     {
-        return $this->value->__toString();
+        return (string) $this->value;
     }
 }

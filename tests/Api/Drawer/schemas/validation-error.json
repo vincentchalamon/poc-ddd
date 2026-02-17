@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "string",
+      "enum": ["/contexts/ConstraintViolationList"]
+    },
+    "@type": {
+      "type": "string",
+      "enum": ["ConstraintViolationList"]
+    },
+    "hydra:title": {
+      "type": "string",
+      "enum": ["An error occurred"]
+    },
+    "hydra:description": {
+      "type": "string"
+    },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "propertyPath": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": ["propertyPath", "message"]
+      },
+      "minItems": 1
+    }
+  },
+  "required": ["@context", "@type", "violations"]
+}

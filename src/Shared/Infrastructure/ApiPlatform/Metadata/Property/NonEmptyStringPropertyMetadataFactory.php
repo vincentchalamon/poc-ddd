@@ -33,23 +33,21 @@ final readonly class NonEmptyStringPropertyMetadataFactory implements PropertyMe
             }
         }
 
-        /** @var ObjectType<NonEmptyString>[] $types */
-        $types = $propertyMetadata->getBuiltinTypes() ?? [];
-
-        foreach ($types as $type) {
-            if (NonEmptyString::class === $type->getClassName()) {
-                continue;
-            }
-
-            $propertyMetadata = $propertyMetadata
-                ->withSchema(($propertyMetadata->getSchema() ?? []) + [
-                    'type' => $type->isNullable() ? ['string', 'null'] : 'string',
-                    'minLength' => NonEmptyString::MINIMUM_LENGTH,
-                ])
-                // prevents API Platform to detect it as an object
-                ->withExtraProperties($propertyMetadata->getExtraProperties() + [SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true]);
+        $type = $propertyMetadata->getNativeType();
+        if (!$type instanceof ObjectType) {
+            return $propertyMetadata;
         }
 
-        return $propertyMetadata;
+        if (NonEmptyString::class === $type->getClassName()) {
+            return $propertyMetadata;
+        }
+
+        return $propertyMetadata
+            ->withSchema(($propertyMetadata->getSchema() ?? []) + [
+                'type' => $type->isNullable() ? ['string', 'null'] : 'string',
+                'minLength' => NonEmptyString::MINIMUM_LENGTH,
+            ])
+            // prevents API Platform to detect it as an object
+            ->withExtraProperties($propertyMetadata->getExtraProperties() + [SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true]);
     }
 }

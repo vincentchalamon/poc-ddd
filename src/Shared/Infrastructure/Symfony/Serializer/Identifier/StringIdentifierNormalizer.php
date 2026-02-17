@@ -24,7 +24,7 @@ final readonly class StringIdentifierNormalizer implements NormalizerInterface, 
     #[\Override]
     public function normalize(mixed $data, ?string $format = null, array $context = []): string
     {
-        return $data->__toString();
+        return (string) $data;
     }
 
     #[\Override]

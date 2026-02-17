@@ -8,7 +8,7 @@ use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFacto
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\Exception\PropertyNotFoundException;
 use ApiPlatform\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
-use App\Shared\Domain\Float\FloatValue;
+use App\Shared\Domain\Number\FloatValue;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
@@ -38,22 +38,20 @@ final readonly class FloatValuePropertyMetadataFactory implements PropertyMetada
             }
         }
 
-        /** @var ObjectType<FloatValue>[] $types */
-        $types = $propertyMetadata->getBuiltinTypes() ?? [];
-
-        foreach ($types as $type) {
-            if (FloatValue::class === $type->getClassName()) {
-                continue;
-            }
-
-            $propertyMetadata = $propertyMetadata
-                ->withSchema(($propertyMetadata->getSchema() ?? []) + [
-                    'type' => $type->isNullable() ? ['number', 'string', 'null'] : ['number', 'string'],
-                ])
-                // prevents API Platform to detect it as an object
-                ->withExtraProperties($propertyMetadata->getExtraProperties() + [SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true]);
+        $type = $propertyMetadata->getNativeType();
+        if (!$type instanceof ObjectType) {
+            return $propertyMetadata;
         }
 
-        return $propertyMetadata;
+        if (FloatValue::class === $type->getClassName()) {
+            return $propertyMetadata;
+        }
+
+        return $propertyMetadata
+            ->withSchema(($propertyMetadata->getSchema() ?? []) + [
+                'type' => $type->isNullable() ? ['number', 'string', 'null'] : ['number', 'string'],
+            ])
+            // prevents API Platform to detect it as an object
+            ->withExtraProperties($propertyMetadata->getExtraProperties() + [SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true]);
     }
 }

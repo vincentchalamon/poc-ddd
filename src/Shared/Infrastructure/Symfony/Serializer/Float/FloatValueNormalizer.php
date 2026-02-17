@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Symfony\Serializer\Float;
 
 use App\Shared\Domain\Exception\FloatValueException;
-use App\Shared\Domain\Float\FloatValue;
+use App\Shared\Domain\Number\FloatValue;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -38,7 +38,7 @@ final readonly class FloatValueNormalizer implements NormalizerInterface, Denorm
         }
 
         try {
-            return new FloatValue(value: $data);
+            return new FloatValue($data);
         } catch (FloatValueException $floatValueException) {
             throw NotNormalizableValueException::createForUnexpectedDataType(message: $floatValueException->getMessage(), data: $data, expectedTypes: ['int', 'float', 'string'], path: $context['deserialization_path'] ?? null, useMessageForUser: true);
         }

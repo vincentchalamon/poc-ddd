@@ -45,7 +45,7 @@ final class UuidIdentifierType extends StringType
             return $value;
         }
 
-        return $value->__toString();
+        return (string) $value;
     }
 
     /**

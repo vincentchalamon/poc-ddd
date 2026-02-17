@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Domain\Text;
 
 use App\Shared\Domain\Exception\NonEmptyStringException;
+use Doctrine\Common\Comparable;
 use Symfony\Component\String\UnicodeString;
 
 use function Symfony\Component\String\u;
@@ -14,7 +15,7 @@ use function Symfony\Component\String\u;
  *
  * @throws NonEmptyStringException When the string contains leading or trailing whitespace, or is shorter than 1 character
  */
-final readonly class NonEmptyString
+readonly class NonEmptyString implements \Stringable, Comparable
 {
     public const int MINIMUM_LENGTH = 1;
 
@@ -34,9 +35,31 @@ final readonly class NonEmptyString
         $this->text = u($text);
     }
 
+    #[\Override]
+    public function __toString(): string
+    {
+        return $this->text();
+    }
+
+    #[\Override]
+    public function compareTo($other): int
+    {
+        $compare = strcmp((string) $this, (string) $other);
+
+        if ($compare < 0) {
+            return -1;
+        }
+
+        if ($compare > 0) {
+            return 1;
+        }
+
+        return 0;
+    }
+
     public function text(): string
     {
-        return $this->text->__toString();
+        return (string) $this->text;
     }
 
     public function length(): int

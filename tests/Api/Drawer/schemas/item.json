@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUID v7 identifier"
+    },
+    "emailAddress": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address of the sock"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Auto-generated unique name"
+    },
+    "style": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "size": {
+              "type": "number",
+              "minimum": 100,
+              "maximum": 250,
+              "description": "Size in centimeters"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Style description"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "description": "Style keywords"
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 90
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                }
+              },
+              "required": ["latitude", "longitude"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["size", "description", "keywords", "location"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": ["identifier", "emailAddress", "name", "style"],
+  "additionalProperties": false
+}

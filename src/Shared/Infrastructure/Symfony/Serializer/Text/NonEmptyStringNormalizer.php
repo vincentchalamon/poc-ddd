@@ -15,7 +15,7 @@ final class NonEmptyStringNormalizer implements NormalizerInterface, Denormalize
     #[\Override]
     public function normalize(mixed $data, ?string $format = null, array $context = []): string
     {
-        return $data->text();
+        return (string) $data;
     }
 
     #[\Override]
@@ -26,10 +26,10 @@ final class NonEmptyStringNormalizer implements NormalizerInterface, Denormalize
         }
 
         if (!\is_string($data)) {
-            throw NotNormalizableValueException::createForUnexpectedDataType(message: 'The value is not denormalizable to a non-empty string object', data: $data, expectedTypes: ['string'], path: $context['deserialization_path'] ?? null, useMessageForUser: true);
+            throw NotNormalizableValueException::createForUnexpectedDataType(message: 'Value is not a valid string.', data: $data, expectedTypes: ['string'], path: $context['deserialization_path'] ?? null, useMessageForUser: true);
         }
 
-        return new NonEmptyString(text: $data);
+        return new NonEmptyString($data);
     }
 
     #[\Override]

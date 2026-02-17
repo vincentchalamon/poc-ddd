@@ -21,7 +21,7 @@ trait NonEmptyStringTypeTrait
             throw new ConversionException(\sprintf('Expected instance of %s, got %s.', NonEmptyString::class, get_debug_type($value)));
         }
 
-        return $value?->text();
+        return $value?->__toString();
     }
 
     #[\Override]

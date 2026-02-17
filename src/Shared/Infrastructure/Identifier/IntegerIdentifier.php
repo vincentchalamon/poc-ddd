@@ -26,16 +26,16 @@ final readonly class IntegerIdentifier implements Identifier
     }
 
     /**
-     * @param Identifier $objectToCompare
+     * @param Identifier $other
      */
     #[\Override]
-    public function compareTo(mixed $objectToCompare): bool
+    public function compareTo($other): int
     {
-        if (!$objectToCompare instanceof self) {
-            throw new \InvalidArgumentException(\sprintf('Argument $a must be an instance of "%s", "%s" given.', self::class, $objectToCompare::class));
+        if (!$other instanceof self) {
+            throw new \InvalidArgumentException(\sprintf('Argument $a must be an instance of "%s", "%s" given.', self::class, $other::class));
         }
 
-        return $this->value === $objectToCompare->__toString();
+        return bccomp($this->value, (string) $other);
     }
 
     #[\Override]

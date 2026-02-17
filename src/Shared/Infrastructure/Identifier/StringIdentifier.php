@@ -19,16 +19,26 @@ final readonly class StringIdentifier implements Identifier
     }
 
     /**
-     * @param Identifier $objectToCompare
+     * @param Identifier $other
      */
     #[\Override]
-    public function compareTo(mixed $objectToCompare): bool
+    public function compareTo($other): int
     {
-        if (!$objectToCompare instanceof self) {
-            throw new \InvalidArgumentException(\sprintf('Argument $a must be an instance of "%s", "%s" given.', self::class, $objectToCompare::class));
+        if (!$other instanceof self) {
+            throw new \InvalidArgumentException(\sprintf('Argument $a must be an instance of "%s", "%s" given.', self::class, $other::class));
         }
 
-        return $this->value === $objectToCompare->__toString();
+        $compare = strcmp((string) $this, (string) $other);
+
+        if ($compare < 0) {
+            return -1;
+        }
+
+        if ($compare > 0) {
+            return 1;
+        }
+
+        return 0;
     }
 
     #[\Override]

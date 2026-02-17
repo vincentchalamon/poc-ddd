@@ -33,42 +33,40 @@ final readonly class IdentifierPropertyMetadataFactory implements PropertyMetada
             }
         }
 
-        /** @var ObjectType<Identifier>[] $types */
-        $types = $propertyMetadata->getBuiltinTypes() ?? [];
-
-        foreach ($types as $type) {
-            if (!is_a($type->getClassName(), Identifier::class, true)) {
-                continue;
-            }
-
-            $types = $propertyMetadata->getTypes() ?? ['https://schema.org/identifier'];
-            $schema = $propertyMetadata->getSchema() ?? [];
-
-            if (null === $propertyMetadata->isIdentifier()) {
-                $propertyMetadata = $propertyMetadata->withIdentifier(true);
-            }
-
-            // Default format to uuid
-            if (!isset($schema['type'])) {
-                $schema['type'] = $type->isNullable() ? ['string', 'null'] : 'string';
-                $schema['format'] = 'uuid';
-            }
-
-            if (!isset($schema['readOnly']) && $propertyMetadata->isIdentifier()) {
-                $schema['readOnly'] = true;
-            }
-
-            if (!isset($schema['externalDocs'])) {
-                $schema['externalDocs'] = ['url' => $propertyMetadata->getTypes()[0] ?? 'https://schema.org/identifier'];
-            }
-
-            $propertyMetadata = $propertyMetadata
-                ->withTypes($types)
-                ->withSchema($schema)
-                // prevents API Platform to modify this schema
-                ->withExtraProperties($propertyMetadata->getExtraProperties() + [SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true]);
+        $type = $propertyMetadata->getNativeType();
+        if (!$type instanceof ObjectType) {
+            return $propertyMetadata;
         }
 
-        return $propertyMetadata;
+        if (!is_a($type->getClassName(), Identifier::class, true)) {
+            return $propertyMetadata;
+        }
+
+        $types = $propertyMetadata->getTypes() ?? ['https://schema.org/identifier'];
+        $schema = $propertyMetadata->getSchema() ?? [];
+
+        if (null === $propertyMetadata->isIdentifier()) {
+            $propertyMetadata = $propertyMetadata->withIdentifier(true);
+        }
+
+        // Default format to uuid
+        if (!isset($schema['type'])) {
+            $schema['type'] = $type->isNullable() ? ['string', 'null'] : 'string';
+            $schema['format'] = 'uuid';
+        }
+
+        if (!isset($schema['readOnly']) && $propertyMetadata->isIdentifier()) {
+            $schema['readOnly'] = true;
+        }
+
+        if (!isset($schema['externalDocs'])) {
+            $schema['externalDocs'] = ['url' => $propertyMetadata->getTypes()[0] ?? 'https://schema.org/identifier'];
+        }
+
+        return $propertyMetadata
+            ->withTypes($types)
+            ->withSchema($schema)
+            // prevents API Platform to modify this schema
+            ->withExtraProperties($propertyMetadata->getExtraProperties() + [SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true]);
     }
 }

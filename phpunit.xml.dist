@@ -17,7 +17,6 @@
         <env name="LANG" value="en_GB.UTF-8" force="true" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="KERNEL_CLASS" value="App\Kernel"/>
     </php>
 
     <source ignoreSuppressionOfDeprecations="true" ignoreIndirectDeprecations="true">

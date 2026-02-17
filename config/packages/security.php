@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Drawer\Domain\Model\Sock as DrawerSock;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -11,8 +12,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             PasswordAuthenticatedUserInterface::class => 'auto',
         ],
         'providers' => [
-            'users_in_memory' => [
-                'memory' => null,
+            'sock' => [
+                'entity' => [
+                    'class' => DrawerSock::class,
+                    'property' => 'emailAddress',
+                ],
             ],
         ],
         'firewalls' => [
@@ -22,7 +26,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
             'main' => [
                 'lazy' => true,
-                'provider' => 'users_in_memory',
+                'provider' => 'sock',
                 'stateless' => true,
             ],
         ],

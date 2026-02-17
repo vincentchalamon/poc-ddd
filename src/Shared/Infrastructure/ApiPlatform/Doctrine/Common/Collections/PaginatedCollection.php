@@ -30,10 +30,10 @@ use Doctrine\Common\Collections\Selectable as SelectableInterface;
 final readonly class PaginatedCollection implements ReadableCollectionInterface, SelectableInterface, PaginatorInterface
 {
     /**
-     * @param ReadableCollectionInterface<TKey, T> $data
+     * @param ReadableCollectionInterface<TKey, T> $collection
      */
     public function __construct(
-        private ReadableCollectionInterface $data,
+        private ReadableCollectionInterface $collection,
         private int $page,
         private int $itemsPerPage,
     ) {
@@ -50,7 +50,7 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     public function map(\Closure $func): ReadableCollectionInterface
     {
         return new self(
-            data: $this->data->map($func),
+            collection: $this->collection->map($func),
             page: $this->page,
             itemsPerPage: $this->itemsPerPage,
         );
@@ -62,17 +62,17 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function matching(Criteria $criteria): self
     {
-        if (!$this->data instanceof SelectableInterface) {
-            throw new \InvalidArgumentException(\sprintf('Cannot call "matching" method on %s.', $this->data::class));
+        if (!$this->collection instanceof SelectableInterface) {
+            throw new \InvalidArgumentException(\sprintf('Cannot call "matching" method on %s.', $this->collection::class));
         }
 
         // If the collection is a PersistentCollection or QueryBuilderCollection,
         // the collection should not be initialized
         /** @var ReadableCollectionInterface<TKey, T> $matchedData */
-        $matchedData = $this->data->matching($criteria);
+        $matchedData = $this->collection->matching($criteria);
 
         return new self(
-            data: $matchedData,
+            collection: $matchedData,
             page: $this->page,
             itemsPerPage: $this->itemsPerPage,
         );
@@ -101,7 +101,7 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function partition(\Closure $p): array
     {
-        return $this->data->partition($p);
+        return $this->collection->partition($p);
     }
 
     /**
@@ -110,13 +110,13 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function getIterator(): \Traversable
     {
-        return $this->data->getIterator();
+        return $this->collection->getIterator();
     }
 
     #[\Override]
     public function count(): int
     {
-        return $this->data->count();
+        return $this->collection->count();
     }
 
     /**
@@ -129,13 +129,13 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function contains(mixed $element): bool
     {
-        return $this->data->contains($element);
+        return $this->collection->contains($element);
     }
 
     #[\Override]
     public function isEmpty(): bool
     {
-        return $this->data->isEmpty();
+        return $this->collection->isEmpty();
     }
 
     /**
@@ -144,7 +144,7 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function containsKey(int|string $key): bool
     {
-        return $this->data->containsKey($key);
+        return $this->collection->containsKey($key);
     }
 
     /**
@@ -155,73 +155,73 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function get(int|string $key): mixed
     {
-        return $this->data->get($key);
+        return $this->collection->get($key);
     }
 
     #[\Override]
     public function getKeys(): array
     {
-        return $this->data->getKeys();
+        return $this->collection->getKeys();
     }
 
     #[\Override]
     public function getValues(): array
     {
-        return $this->data->getValues();
+        return $this->collection->getValues();
     }
 
     #[\Override]
     public function toArray(): array
     {
-        return $this->data->toArray();
+        return $this->collection->toArray();
     }
 
     #[\Override]
     public function first(): mixed
     {
-        return $this->data->first();
+        return $this->collection->first();
     }
 
     #[\Override]
     public function last(): mixed
     {
-        return $this->data->last();
+        return $this->collection->last();
     }
 
     #[\Override]
     public function key(): int|string|null
     {
-        return $this->data->key();
+        return $this->collection->key();
     }
 
     #[\Override]
     public function current(): mixed
     {
-        return $this->data->current();
+        return $this->collection->current();
     }
 
     #[\Override]
     public function next(): mixed
     {
-        return $this->data->next();
+        return $this->collection->next();
     }
 
     #[\Override]
     public function slice(int $offset, ?int $length = null): array
     {
-        return $this->data->slice($offset, $length);
+        return $this->collection->slice($offset, $length);
     }
 
     #[\Override]
     public function exists(\Closure $p): bool
     {
-        return $this->data->exists($p);
+        return $this->collection->exists($p);
     }
 
     #[\Override]
     public function forAll(\Closure $p): bool
     {
-        return $this->data->forAll($p);
+        return $this->collection->forAll($p);
     }
 
     /**
@@ -234,13 +234,13 @@ final readonly class PaginatedCollection implements ReadableCollectionInterface,
     #[\Override]
     public function indexOf(mixed $element)
     {
-        return $this->data->indexOf($element);
+        return $this->collection->indexOf($element);
     }
 
     #[\Override]
     public function findFirst(\Closure $p): mixed
     {
-        return $this->data->findFirst($p);
+        return $this->collection->findFirst($p);
     }
 
     #[\Override]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Doctrine\DBAL\Types\Float;
 
-use App\Shared\Domain\Float\FloatValue;
+use App\Shared\Domain\Number\FloatValue;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
@@ -61,7 +61,7 @@ final class FloatValueType extends Type
             throw InvalidType::new($value, self::TYPE, ['null', FloatValue::class]);
         }
 
-        return parent::convertToDatabaseValue(value: $value->__toString(), platform: $platform);
+        return parent::convertToDatabaseValue(value: (string) $value, platform: $platform);
     }
 
     #[\Override]

@@ -6,7 +6,7 @@ namespace App\Shared\Domain\Exception;
 
 use function Symfony\Component\String\u;
 
-final class NonEmptyStringException extends \DomainException
+final class NonEmptyStringException extends \DomainException implements UnprocessableThrowable
 {
     public static function textMustBeTrimmed(string $text): self
     {
