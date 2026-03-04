@@ -29,8 +29,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class FloatValueType extends Type
 {
-    public const string TYPE = 'float_value';
-
     /**
      * Force scale and precision.
      *
@@ -58,7 +56,7 @@ class FloatValueType extends Type
         }
 
         if (!$value instanceof FloatValue) {
-            throw InvalidType::new($value, self::TYPE, ['null', FloatValue::class]);
+            throw InvalidType::new($value, self::class, ['null', FloatValue::class]);
         }
 
         return parent::convertToDatabaseValue((string) $value, $platform);

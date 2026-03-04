@@ -14,7 +14,7 @@ use App\Shared\Domain\Text\NonEmptyString;
 final readonly class NameFactory
 {
     /**
-     * @var array<self::TYPE_*, string>
+     * @var array<array-key, string>
      */
     private const ANIMAL = [
         // Amphibian
@@ -83,7 +83,7 @@ final readonly class NameFactory
     ];
 
     /**
-     * @var array<self::TYPE_*, string>
+     * @var array<array-key, string>
      */
     private const array ADJECTIVE = [
         // Appearance

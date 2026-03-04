@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude([
             __DIR__.'/../../../Domain',
             __DIR__.'/../../Identifier',
-            __DIR__.'/../../Doctrine',
+            __DIR__.'/../../Doctrine/{Common,DBAL,ORM/Mapping,ORM/QueryBuilderCollection.php}',
             __DIR__.'/../../ApiPlatform/Doctrine',
             __DIR__.'/../../ApiPlatform/Exception',
             __DIR__,

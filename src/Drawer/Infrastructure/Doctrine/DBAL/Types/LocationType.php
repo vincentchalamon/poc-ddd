@@ -29,8 +29,6 @@ use Doctrine\DBAL\Types\JsonType;
  */
 final class LocationType extends JsonType
 {
-    public const string TYPE = 'money';
-
     #[\Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
@@ -39,7 +37,7 @@ final class LocationType extends JsonType
         }
 
         if (!$value instanceof Location) {
-            throw InvalidType::new($value, self::TYPE, ['null', Location::class]);
+            throw InvalidType::new($value, self::class, ['null', Location::class]);
         }
 
         return parent::convertToDatabaseValue([
@@ -55,7 +53,6 @@ final class LocationType extends JsonType
             return null;
         }
 
-        /** @var array{value: string, currency: string} $data */
         $data = parent::convertToPHPValue($value, $platform);
         if (!\is_array($data)) {
             return $value;

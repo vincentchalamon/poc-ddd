@@ -13,6 +13,7 @@ use App\Drawer\Infrastructure\ApiPlatform\State\GetSockProvider;
 use App\Drawer\Infrastructure\ApiPlatform\State\UpdateSockProcessor;
 use App\Shared\Domain\Identifier\Identifier;
 use App\Shared\Domain\Text\NonEmptyString;
+use App\Shared\Infrastructure\Doctrine\ORM\Mapping\NullableEmbedded;
 use App\Shared\Infrastructure\Identifier\UuidIdentifier;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -50,6 +51,7 @@ class Sock implements \Stringable
     #[Assert\NotNull(groups: ['sock:update'])]
     #[Groups(['sock:read', 'sock:update'])]
     #[ORM\Embedded(class: Style::class)]
+    #[NullableEmbedded]
     private ?Style $style = null;
 
     public function __construct(
